@@ -34,7 +34,7 @@ $(FT_PRINTF_DIR)/libftprintf.a:
 	@echo "$(CYAN)libftprintf compiled!"
 
 $(GNL_DIR)/libgnl.a:
-	@make -C $(GNL_DIR)
+	@make all -C $(GNL_DIR) --no-print-directory
 	@echo "$(CYAN)get_next_line compiled!"
 
 $(LIBFT_DIR)/libft.a:

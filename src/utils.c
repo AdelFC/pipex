@@ -6,7 +6,7 @@
 /*   By: afodil-c <afodil-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:34:07 by afodil-c          #+#    #+#             */
-/*   Updated: 2025/02/28 23:01:18 by afodil-c         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:17:01 by afodil-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_error(char *str)
 
 char	**ft_find_path(char **envp)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
@@ -29,7 +29,7 @@ char	**ft_find_path(char **envp)
 			return (ft_split(envp[i] + 5, ':'));
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
 void	ft_exe(char *cmd, char **envp)
@@ -42,10 +42,14 @@ void	ft_exe(char *cmd, char **envp)
 	command = ft_split(cmd, ' ');
 	path = ft_find_path(envp);
 	if (!path)
-		ft_error("Error: no PATH");
+	{
+		execve(cmd, command, envp);
+		ft_free_array(command);
+		ft_error("Error: command not found");
+	}
 	i = 0;
-	if(!envp)
-		return;
+	if (!envp)
+		return ;
 	while (path[i])
 	{
 		full_path = ft_join_path(path[i], '/', command[0]);
@@ -54,6 +58,7 @@ void	ft_exe(char *cmd, char **envp)
 		free(full_path);
 		i++;
 	}
+	execve(cmd, command, envp);
 	ft_free_array(command);
 	ft_free_array(path);
 	ft_error("Error: command not found");
@@ -70,13 +75,12 @@ char	*ft_join_path(char const *dir, char sep, char const *cmd)
 	i = 0;
 	j = 0;
 	if (!dir || !cmd)
-		return 0;
+		return (0);
 	len_dir = ft_strlen(dir);
 	len_cmd = ft_strlen(cmd);
 	path = (char *)malloc(sizeof(char) * (len_dir + len_cmd + 2));
 	if (!path)
-		return 0;
-
+		return (0);
 	while (j < len_dir)
 	{
 		path[i] = dir[j];
@@ -101,7 +105,7 @@ void	ft_free_array(char **array)
 	int	i;
 
 	if (!array)
-		return;
+		return ;
 	i = 0;
 	while (array[i])
 	{
