@@ -1,6 +1,8 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
+
+# Sources
 SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 	  ft_strlen.c ft_bzero.c ft_putendl_fd.c ft_strlcpy.c ft_strlcat.c \
 	  ft_toupper.c ft_tolower.c ft_strdup.c ft_strchr.c ft_strrchr.c \
@@ -12,35 +14,44 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 	  ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 	  ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 
+# Object files
 OBJS = $(SRC:.c=.o)
 
+# Colors
 GREEN = \033[0;92m
 BLUE = \033[0;94m
 CYAN = \033[0;96m
+YELLOW = \033[0;93m
 DEF_COLOR = \033[0m
 
+# Compilation principale
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@ar -rcs $(NAME) $(OBJS)
 	@echo "$(GREEN)$(NAME) compiled successfully!$(DEF_COLOR)"
 
-.c.o:
+# Compilation des fichiers objets
+%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-clean: 
-	@rm -f $(OBJS) 
+# Nettoyage des fichiers objets
+clean:
+	@rm -f $(OBJS)
 	@echo "$(BLUE)Object files cleaned!$(DEF_COLOR)"
 
+# Nettoyage total
 fclean: clean
 	@rm -f $(NAME)
 	@echo "$(CYAN)$(NAME) removed!$(DEF_COLOR)"
 
+# Recompile tout
 re: fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything!$(DEF_COLOR)"
 
+# Vérification Norminette
 n:
 	@norminette -R CheckDefine
-	@echo "$(CYAN)Norminette check completed!$(DEF_COLOR)"
+	@echo "$(YELLOW)Norminette check completed!$(DEF_COLOR)"
 
-.PHONY: all  clean fclean re
+.PHONY: all clean fclean re $(NAME)

@@ -6,7 +6,7 @@
 /*   By: afodil-c <afodil-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 18:59:31 by afodil-c          #+#    #+#             */
-/*   Updated: 2025/03/01 12:34:43 by afodil-c         ###   ########.fr       */
+/*   Updated: 2025/03/01 23:20:03 by afodil-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PIPEX_H
 
 # include "../lib/ftprintf/ft_printf.h"
-# include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>

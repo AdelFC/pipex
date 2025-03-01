@@ -6,7 +6,7 @@
 /*   By: afodil-c <afodil-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:32:15 by afodil-c          #+#    #+#             */
-/*   Updated: 2025/02/28 22:55:43 by afodil-c         ###   ########.fr       */
+/*   Updated: 2025/03/01 23:39:38 by afodil-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ void	ft_command1(int fd[2], char **argv, char **envp)
 	f_in = open(argv[1], O_RDONLY);
 	if (f_in < 0)
 		ft_error("Error: input file");
-	if (dup2(f_in, STDIN_FILENO) == -1)
-		ft_error("Error: dup2 input");
-	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		ft_error("Error: dup2 pipe output");
+	if (dup2(f_in, STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
+		ft_error("Error: dup2 failed");
 	close(fd[0]);
 	close(fd[1]);
 	close(f_in);
@@ -33,13 +31,11 @@ void	ft_command2(int fd[2], char **argv, char **envp)
 {
 	int	f_out;
 
-	f_out = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	f_out = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (f_out < 0)
 		ft_error("Error: output file");
-	if (dup2(fd[0], STDIN_FILENO) == -1)
-		ft_error("Error: dup2 pipe input");
-	if (dup2(f_out, STDOUT_FILENO) == -1)
-		ft_error("Error: dup2 output");
+	if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(f_out, STDOUT_FILENO) == -1)
+		ft_error("Error: dup2 failed");
 	close(fd[0]);
 	close(fd[1]);
 	close(f_out);
