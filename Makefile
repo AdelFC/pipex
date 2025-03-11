@@ -1,79 +1,71 @@
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -no-pie
 NAME = pipex
 
-# Directories
 FT_PRINTF_DIR = lib/ftprintf
+GNL_DIR = lib/get_next_line
 LIBFT_DIR = lib/libft
 UTILS_DIR = utils
 SRC_DIR = src
+OBJ_DIR = obj
 INCS = -I includes
 
-SRC = $(SRC_DIR)/pipex.c $(SRC_DIR)/utils.c 
+SRC = pipex.c utils.c
 
-# Object files
-OBJS = $(SRC:.c=.o) $(UTILS:.c=.o)
+UTILS = 
 
-# Libraries
-FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
-LIBFT = $(LIBFT_DIR)/libft.a
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o) $(UTILS:.c=.o))
 
-# Colors
+LIBS = -L$(FT_PRINTF_DIR) -lftprintf \
+       -L$(GNL_DIR) -lftgnl \
+       -L$(LIBFT_DIR) -lft
+
 GREEN = \033[0;92m
 BLUE = \033[0;94m
 CYAN = \033[0;96m
 YELLOW = \033[0;93m
-DEF_COLOR = \033[0m
 
-all: $(NAME)
+all: $(FT_PRINTF_DIR)/libftprintf.a $(GNL_DIR)/libgnl.a $(LIBFT_DIR)/libft.a $(NAME)
 
-$(NAME): $(OBJS) $(FT_PRINTF) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(FT_PRINTF_DIR) -lftprintf \
-        -L$(GNL_DIR) -lftgnl -L$(LIBFT_DIR) -lft -o $(NAME)
-	@echo ""
-	@echo "$(GREEN)╔════════════════════════════╗$(DEF_COLOR)"
-	@echo "$(GREEN)║       PIPEX COMPILED!      ║$(DEF_COLOR)"
-	@echo "$(GREEN)╚════════════════════════════╝$(DEF_COLOR)"
-	@echo ""
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	@echo "$(GREEN) Compilation of $(NAME) completed!$(BLUE)"
 
-# Libraries
-$(FT_PRINTF):
+$(FT_PRINTF_DIR)/libftprintf.a:
 	@make -C $(FT_PRINTF_DIR) --no-print-directory
-	@echo "$(CYAN)ftprintf compiled!$(DEF_COLOR)"
 
-$(LIBFT):
+$(GNL_DIR)/libgnl.a:
+	@make -C $(GNL_DIR) --no-print-directory
+
+$(LIBFT_DIR)/libft.a:
 	@make -C $(LIBFT_DIR) --no-print-directory
-	@echo "$(CYAN)libft compiled!$(DEF_COLOR)"
 
-# Compilation des fichiers objets
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+	@echo "$(CYAN)Compiled: $< $(BLUE)"
 
-$(UTILS_DIR)/%.o: $(UTILS_DIR)/%.c
+$(OBJ_DIR)/%.o: $(UTILS_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+	@echo "$(CYAN)Compiled: $< $(BLUE)"
 
-# Clean
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+	@echo "$(YELLOW) Created directory: $(OBJ_DIR)$(BLUE)"
+
 clean:
-	@rm -f $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@make -C $(FT_PRINTF_DIR) clean --no-print-directory
+	@make -C $(GNL_DIR) clean --no-print-directory
 	@make -C $(LIBFT_DIR) clean --no-print-directory
-	@echo "$(BLUE)Object files cleaned!$(DEF_COLOR)"
+	@echo "$(YELLOW) Cleaned object files.$(BLUE)"
 
-# Full clean
 fclean: clean
 	@rm -f $(NAME)
 	@make -C $(FT_PRINTF_DIR) fclean --no-print-directory
+	@make -C $(GNL_DIR) fclean --no-print-directory
 	@make -C $(LIBFT_DIR) fclean --no-print-directory
-	@echo "$(BLUE)All compiled files cleaned!$(DEF_COLOR)"
+	@echo "$(YELLOW) Removed $(NAME) and compiled files.$(BLUE)"
 
-# Re
 re: fclean all
-	@echo "$(GREEN)        PROJECT REBUILT!      $(DEF_COLOR)"
-	@echo ""
 
-# Norminette
-n:
-	@norminette -R CheckDefine
-	@echo "$(YELLOW)Norminette check completed!$(DEF_COLOR)"
-
-.PHONY: all clean fclean re $(NAME)
+.PHONY: all clean fclean re

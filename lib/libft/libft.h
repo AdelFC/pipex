@@ -6,12 +6,11 @@
 /*   By: afodil-c <afodil-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:30:25 by afodil-c          #+#    #+#             */
-/*   Updated: 2025/01/23 11:01:21 by afodil-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:28:15 by afodil-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
-
 # define LIBFT_H
 
 # include <stdio.h>
