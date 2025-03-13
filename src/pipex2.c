@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afodil-c <afodil-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:34:07 by afodil-c          #+#    #+#             */
-/*   Updated: 2025/03/01 23:54:44 by afodil-c         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:03:36 by afodil-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ char	**ft_find_path(char **envp)
 
 void	ft_exe(char *cmd, char **envp)
 {
-	int		i;
 	char	**command;
 	char	**path;
-	char	*full_path;
 
 	command = ft_split(cmd, ' ');
 	if (!command)
@@ -51,6 +49,14 @@ void	ft_exe(char *cmd, char **envp)
 		ft_free_array(command);
 		ft_error("Error: command not found");
 	}
+	ft_execve_paths(command, path, envp, cmd);
+}
+
+void	ft_execve_paths(char **command, char **path, char **envp, char *cmd)
+{
+	int		i;
+	char	*full_path;
+
 	i = 0;
 	if (!envp)
 		return ;
@@ -91,19 +97,4 @@ char	*ft_join_path(char const *dir, char sep, char const *cmd)
 	path[len_dir] = sep;
 	ft_strlcpy(path + len_dir + 1, cmd, len_cmd + 1);
 	return (path);
-}
-
-void	ft_free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
 }

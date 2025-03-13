@@ -10,7 +10,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 INCS = -I includes
 
-SRC = pipex.c utils.c
+SRC = pipex.c pipex2.c pipex3.c
 
 UTILS = 
 
